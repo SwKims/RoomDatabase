@@ -1,12 +1,11 @@
 package com.ksw.roomdatabase.fragments.update
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -40,6 +39,9 @@ class UpdateFragment : Fragment() {
             updateItem()
         }
 
+        // add delete menu
+        setHasOptionsMenu(true)
+
         return view
     }
 
@@ -65,4 +67,28 @@ class UpdateFragment : Fragment() {
         return !(TextUtils.isEmpty(firstName) && TextUtils.isEmpty(lastName) && age.isEmpty())
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.delete_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menu_delete) {
+            deleteUser()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun deleteUser() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setPositiveButton("네") { _,_ ->
+            mUserViewModel.deleteUser(args.currentUser)
+            Toast.makeText(requireContext(), "삭제 성공, ${args.currentUser.firstName}", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_updateFragment_to_listFragment)
+        }
+        builder.setNegativeButton("아니요") {_,_ -> }
+        builder.setTitle("삭제 ${args.currentUser.firstName}?")
+        builder.setMessage("정말로 삭제 하겠습니까? ${args.currentUser.firstName}")
+        builder.create().show()
+
+    }
 }
