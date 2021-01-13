@@ -6,7 +6,7 @@
 Repository : 여러 데이터 소스를 관리한다.
 
 
-Entity 만들기
+* Entity 만들기
 <pre>
 <code>
 @Parcelize
