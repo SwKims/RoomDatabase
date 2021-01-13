@@ -6,14 +6,20 @@
 Repository : 여러 데이터 소스를 관리한다.
 
 
+Entity 만들기
 <pre>
 <code>
-```
-public class BootSpringBootApplication {
-  public static void main(String[] args) {
-    System.out.println("Hello, Honeymon");
-  }
-}
-```
+@Parcelize
+@Entity(tableName = "user_table")
+data class User(
+     @PrimaryKey(autoGenerate = true)
+     val id : Int,
+     val firstName : String,
+     val lastName : String,
+     val age: Int
+) : Parcelable
 </code>
 </pre>
+
+tableName을 지정하지 않으면 클래스의 이름이 테이블 이름이 된다.   
+room 항목에 자동id를 할당하려면 @PrimaryKey(autoGenerate = true) 속성을 사용한다.   
