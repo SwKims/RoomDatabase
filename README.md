@@ -23,3 +23,31 @@ data class User(
 
 - tableName을 지정하지 않으면 클래스의 이름이 테이블 이름이 된다.   
 - room 항목에 자동id를 할당하려면 @PrimaryKey(autoGenerate = true) 속성을 사용한다.   
+
+
+* Dao 만들기
+<pre>
+<code>
+@Dao
+interface UserDao {
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun addUser(user : User)
+
+    @Update
+    suspend fun updateUser(user: User)
+
+    @Delete
+    suspend fun deleteUser(user: User)
+
+    @Query("DELETE FROM user_table")
+    suspend fun deleteAllUsers()
+
+    @Query("SELECT * FROM user_table ORDER BY id ASC")
+    fun readAllData() : LiveData<List<User>>
+
+}
+</code>
+</pre>
+
+
