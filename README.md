@@ -21,8 +21,8 @@ data class User(
 </code>
 </pre>
 
-> tableName을 지정하지 않으면 클래스의 이름이 테이블 이름이 된다.   
-> room 항목에 자동id를 할당하려면 @PrimaryKey(autoGenerate = true) 속성을 사용한다.   
+> 1. tableName을 지정하지 않으면 클래스의 이름이 테이블 이름이 된다.   
+> 2. room 항목에 자동id를 할당하려면 @PrimaryKey(autoGenerate = true) 속성을 사용한다.   
 
 
 * Dao 만들기
