@@ -50,4 +50,8 @@ interface UserDao {
 </code>
 </pre>
 
+> 데이터베이스에 관한 추상 액세스를 제공하는 메소드가 포함되어 있으며 Room의 주요 구성요소를 형성한다. 
+> 첫번째 함수는 사용자를 추가, 두번째는 사용자 업데이트, 세번째는 저장된 사용자 삭제, 마지막은 사용자의 이름은 오름차순으로 정렬한다.
+> onConflict = OnConflictStrategy 종류가 몇가지 있다.
+> IGNORE은 동일한 이름을 무시하고, REPLACE는 Insert할 때 PrimaryKey가 겹치는 것이 있으면 덮어 쓴다는 뜻이다.
 
