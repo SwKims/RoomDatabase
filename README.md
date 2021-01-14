@@ -54,4 +54,5 @@ interface UserDao {
 > 2. 첫번째 함수는 사용자를 추가, 두번째는 사용자 업데이트, 세번째는 저장된 사용자 삭제, 마지막은 사용자의 이름은 오름차순으로 정렬한다.   
 > 3. onConflict = OnConflictStrategy 종류가 몇가지 있다.   
   IGNORE은 동일한 이름을 무시하고, REPLACE는 Insert할 때 PrimaryKey가 겹치는 것이 있으면 덮어 쓴다는 뜻이다.
+> 4. 데이터가 변경 될 때 반응 할 수 있도록 LiveData를 사용해 쉽게 해결한다.
 
