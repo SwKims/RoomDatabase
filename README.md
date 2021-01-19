@@ -56,3 +56,107 @@ interface UserDao {
   IGNORE은 동일한 이름을 무시하고, REPLACE는 Insert할 때 PrimaryKey가 겹치는 것이 있으면 덮어 쓴다는 뜻이다.
 > 4. 데이터가 변경 될 때 반응 할 수 있도록 LiveData를 사용해 쉽게 해결한다.
 
+
+* Room 만들기
+<pre>
+<code>
+@Database(entities = [User::class], version = 1, exportSchema = false)
+abstract class UserDatabase : RoomDatabase() {
+    abstract fun userDao() : UserDao
+    companion object {
+        @Volatile
+        private var INSTANCE : UserDatabase? = null
+        fun getDatabase(context: Context) : UserDatabase {
+            val tempInstance = INSTANCE
+            if (tempInstance != null) {
+                return tempInstance
+            }
+            synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    UserDatabase::class.java,
+                    "user_database"
+                ).build()
+                INSTANCE = instance
+                return instance
+            }
+        }
+    }
+}
+</code>
+</pre>
+
+> 1. room의 데이터베이스 클래스는 abbstract이고, @Database에 entities와 버전번호를 설정한다.   
+> 2. 싱글톤을 반환하므로 데이터베이스의 다중 인스턴스를 방지한다.   
+
+* Repository 만들기
+<pre>
+<code>
+class UserRepository(private val userDao : UserDao) {
+    val readAllData : LiveData<List<User>> = userDao.readAllData()
+    suspend fun addUser(user : User) {
+        userDao.addUser(user)
+    }
+    suspend fun updateUser(user: User) {
+        userDao.updateUser(user)
+    }
+    suspend fun deleteUser(user: User) {
+        userDao.deleteUser(user)
+    }
+    suspend fun deleteAllUsers() {
+        userDao.deleteAllUsers()
+    }
+}
+</code>
+</pre>
+
+> 1. userDao는D 데이터베이스가 아닌 저장소의 생성자로 전달된다.   
+> 2. DB의 데이터를 가져오면 LiveData가 캐치해서 데이터가 변경되면 메인 스레드에 알려준다.   
+
+* ViewModel 만들기
+<pre>
+<code>
+class UserViewModel(application: Application) : AndroidViewModel(application) {
+
+    val readAllData : LiveData<List<User>>
+    private val repository : UserRepository
+
+    init {
+        val userDao = UserDatabase.getDatabase(
+            application
+        ).userDao()
+        repository = UserRepository(userDao)
+        readAllData = repository.readAllData
+    }
+
+    fun addUser(user : User) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.addUser(user)
+        }
+    }
+
+    fun updateUser(user: User) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateUser(user)
+        }
+    }
+
+    fun deleteUser(user: User) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteUser(user)
+        }
+    }
+
+    fun deleteAllUsers() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAllUsers()
+        }
+    }
+}
+</code>
+</pre>
+
+> 1. application을 매개변수로 받고, AndroidViewModel은 상속을 받는다.   
+> 2. 멤버변수 추가를 위해 LiveData 사용자 목록을 가져오기 위해 readAllData를 생성했다.   
+> 3. 초기화를 통해 userDao에 대한 참조 데이터를 가져온다.   
+
