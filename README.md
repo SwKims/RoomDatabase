@@ -160,3 +160,6 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
 > 2. 멤버변수 추가를 위해 LiveData 사용자 목록을 가져오기 위해 readAllData를 생성했다.   
 > 3. 초기화를 통해 userDao에 대한 참조 데이터를 가져온다.   
 
+---------------------------------------------------------------------------
+
+결과화면 
