@@ -165,6 +165,6 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
 * 결과화면   
 
 <p float="center">
-<img src="https://user-images.githubusercontent.com/71965874/112241446-9996b400-8c8d-11eb-9f88-69e29884e427.jpg" width="35% height="25%">
-<img src="https://user-images.githubusercontent.com/71965874/112241446-9996b400-8c8d-11eb-9f88-69e29884e427.jpg" width="35% height="25%">   
+<img src="https://user-images.githubusercontent.com/71965874/112241446-9996b400-8c8d-11eb-9f88-69e29884e427.jpg" width="25% height="15%">
+<img src="https://user-images.githubusercontent.com/71965874/112241446-9996b400-8c8d-11eb-9f88-69e29884e427.jpg" width="25% height="15%">   
 </p>
